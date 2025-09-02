@@ -19,7 +19,7 @@ spec:
   infrastructure:
     {{- if gt (len .Values.gateway.infrastructureAnnotations) 0 }}
     annotations: {{ toJson .Values.gateway.infrastructureAnnotations }}
-    {{- end }}  
+    {{- end }}
   listeners:
   {{- if $.Values.certmanager.enabled }}
   # Cert Manager Listener
@@ -76,7 +76,7 @@ spec:
       matches:
         - path:
             type: PathPrefix
-            value: /auth
+            value: /
       {{- if .Values.gateway.requestTimeout }}
       timeouts:
         request: "{{ .Values.gateway.requestTimeout }}"
@@ -109,7 +109,7 @@ spec:
       matches:
         - path:
             type: PathPrefix
-            value: /auth
+            value: /
       {{- if .Values.gateway.requestTimeout }}
       timeouts:
         request: "{{ .Values.gateway.requestTimeout }}"
