@@ -8,4 +8,4 @@ spec:
     - port: 80
       targetPort: 80
   selector:
-    app: {{ .Release.Name }}
+    app: {{ .Release.Name }}-ui
