@@ -5,11 +5,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-api
+      app: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-api
+        app: {{ .Release.Name }}
     spec:
       {{- if $.Values.repoSecret.enabled }}
       imagePullSecrets:
