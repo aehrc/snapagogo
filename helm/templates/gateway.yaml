@@ -28,7 +28,7 @@ spec:
   {{- range $i, $host := .Values.gateway.hostNames }}
   {{- if $.Values.certmanager.enabled }}
   # Cert Manager Listener
-    - name: public-http
+    - name: public-http-{{ $host }}
       protocol: HTTP
       port: 80 # This should be always port 80 as per https://cert-manager.io/docs/configuration/acme/http01/#configuring-the-http-01-gateway-api-solver
       allowedRoutes:
