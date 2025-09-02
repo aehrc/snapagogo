@@ -52,6 +52,22 @@ snapagogo:
       value: "spot"
       effect: "NoSchedule"
 
+
+gateway:
+  enabled: true
+  annotations: {}
+  infrastructureAnnotations:
+    service.beta.kubernetes.io/azure-dns-label-name: snapagogo
+  className: envoy-gateway-class-metrics
+  hostNames:
+    - snapagogo.app
+    - api.snapagogo.app
+    - www.snapagogo.app
+  listenerPortHttp: 80
+  listenerPortSecure: 443
+  controlPlaneNamespace: envoy-gateway-system
+  requestTimeout: 3s
+
 nginx-ingress:
   controller:
     enableSnippets: true
@@ -65,13 +81,18 @@ nginx-ingress:
       create: true
 
 ingress:
-  tlsSecretName: snapagogo-tls-secret
   className: snapagogo-nginx
   nginx:
+    enabled: false
     sslRedirect: true
 
 certmanager:
   enabled: true
+  email: ontoserver-support@csiro.au
+
+tls:
+  enabled: true
+  certRef: snapagogo-tls-secret
 
 repoSecret:
   enabled: false
