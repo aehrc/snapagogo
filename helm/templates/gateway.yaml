@@ -21,20 +21,20 @@ spec:
     annotations: {{ toJson .Values.gateway.infrastructureAnnotations }}
     {{- end }}  
   listeners:
-  {{- if eq (len .Values.gateway.hostNames) 0 }}
-    {{- fail "Minimum one entry is required in gateway.hostNames" }}
-  {{- end }}
-  {{ $releaseName := .Release.Name }}
-  {{- range $i, $host := .Values.gateway.hostNames }}
   {{- if $.Values.certmanager.enabled }}
   # Cert Manager Listener
-    - name: public-http-{{ $host }}
+    - name: public-http
       protocol: HTTP
       port: 80 # This should be always port 80 as per https://cert-manager.io/docs/configuration/acme/http01/#configuring-the-http-01-gateway-api-solver
       allowedRoutes:
         namespaces:
           from: Same
   {{- end }}
+  {{- if eq (len .Values.gateway.hostNames) 0 }}
+    {{- fail "Minimum one entry is required in gateway.hostNames" }}
+  {{- end }}
+  {{ $releaseName := .Release.Name }}
+  {{- range $i, $host := .Values.gateway.hostNames }}
     - name: websecure-{{ $host }}
       hostname: {{ $host }}
       port: {{ required "gateway.listenerPortSecure is required" $.Values.gateway.listenerPortSecure }}
