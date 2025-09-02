@@ -4,6 +4,7 @@ snapagogo:
   api:
     image: ontoserver.azurecr.io/snapagogo-api:latest
     resources:
+      cpu: 500m
       memory: 3Gi
       initialHeapSize: 2g
       maxHeapSize: 2g
@@ -32,6 +33,7 @@ snapagogo:
       - www.snapagogo.app
       - snapagogo.app
     resources:
+      cpu: 500m
       memory: 256M
       memorylimit: false
 
