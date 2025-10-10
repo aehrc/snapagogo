@@ -52,6 +52,10 @@ spec:
           effect: {{ $element.effect }}
         {{- end }}
       {{- end }}
+      {{- with .Values.snapagogo.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
   volumeClaimTemplates:
   - metadata:
       name: snapagogo-db-pvc
