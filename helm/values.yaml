@@ -33,7 +33,23 @@ snapagogo:
       - www.snapagogo.app
       - snapagogo.app
     resources:
-      cpu: 500m
+      # 500m was requested here and the pod uses 1m: it serves static assets,
+      # so the request was ~500x its actual draw. On a dev cluster whose two
+      # regular nodes sit at 97% and 99% of requested CPU, that reservation is
+      # what blocked other workloads from scheduling at all (the autoscaler is
+      # already at max node group size, so nothing can be added to absorb it).
+      #
+      # `cpu` is templated as a REQUEST only — deployment-ui.yaml sets no CPU
+      # limit — so this changes what the scheduler reserves, not what the
+      # container may burst to. 50m still leaves ~50x headroom over measured
+      # usage.
+      #
+      # Measured 2026-09-02 via `kubectl top pod -n snapagogo`:
+      #   snapagogo-ui  1m CPU  8Mi memory
+      cpu: 50m
+      # Memory left at 256M deliberately. Usage is 8Mi, so this is also
+      # oversized, but memory was not the binding constraint and trimming a
+      # request with no limit set risks an OOM kill under an unmeasured spike.
       memory: 256M
       memorylimit: false
 
